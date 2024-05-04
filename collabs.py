@@ -7,29 +7,6 @@ import json
 from geopy.geocoders import Nominatim
 from random import randint
 
-file_path = 'official_names.json'
-with open(file_path, 'r', encoding='cp1252') as file:
-    official_names = json.load(file)
-file_path2 = 'country_mapping.json'
-with open(file_path2, 'r', encoding='cp1252') as file:
-    country_mapping = json.load(file)
-
-def country_converter(input_str):
-    input_str_upper = input_str.upper()
-
-    for abbreviation, full_name in country_mapping.items():
-        if input_str_upper == abbreviation.upper():
-            return full_name
-    return input_str
-
-def official_name_converter(input_str):
-    input_str_upper = input_str.upper()
-
-    for abbreviation, full_name in official_names.items():
-        if input_str_upper == abbreviation.upper():
-            return full_name
-    return input_str
-
 
 def combine_lists(list_of_lists):
     combined_list = []
@@ -56,7 +33,6 @@ df['Affiliated Institutions'] = df.apply(lambda row: [inst for inst in row['Affi
 # Combine duplicate entries by concatenating lists in column 'B'
 df = df.groupby('Author Affiliations')['Affiliated Institutions'].agg(combine_lists).reset_index()
 df['Country'] = df['Author Affiliations'].apply(lambda x: x.split(',')[-1].strip())
-df['Country'] = df['Country'].apply(lambda x: official_name_converter(country_converter(x)))
 df.to_csv('collabs.csv', index=False)
 print(df)
 
