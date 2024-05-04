@@ -180,20 +180,12 @@ country_dict = {
     'NO': 'Kingdom of Norway'
 }
 
-file_path = 'official_names.json'
-with open(file_path, 'r', encoding='cp1252') as file:
-    official_names = json.load(file)
-file_path2 = 'country_mapping.json'
-with open(file_path2, 'r', encoding='cp1252') as file:
-    country_mapping = json.load(file)
-
 
 # Define functions
 
 
 def dict_searcher(input_str, dict):
-    # Takes in:
-    # country_mapping for name conversion, official_names for official names, country_dict for removing abbreviations
+    # Takes in country_dict for removing abbreviations
     input_str_upper = input_str.upper()
 
     for abbreviation, full_name in dict.items():

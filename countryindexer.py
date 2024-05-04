@@ -1,10 +1,7 @@
 import pandas as pd
 import json
 
-file_path = 'official_names.json'
-with open(file_path, 'r', encoding='cp1252') as file:
-    official_names = json.load(file)
-file_path2 = 'country_mapping.json'
+file_path2 = 'countrydict.json'
 with open(file_path2, 'r', encoding='cp1252') as file:
     country_mapping = json.load(file)
 
@@ -41,24 +38,7 @@ EURAFR_list = [
 ]
 
 region_list = EURAFR_list
-
-
-def country_converter(input_str):
-    input_str_upper = input_str.upper()
-
-    for abbreviation, full_name in country_mapping.items():
-        if input_str_upper == abbreviation.upper():
-            return full_name
-    return input_str
-
-def official_name_converter(input_str):
-    input_str_upper = input_str.upper()
-
-    for abbreviation, full_name in official_names.items():
-        if input_str_upper == abbreviation.upper():
-            return full_name
-    return input_str
-
+print(set(country_mapping.values()))
 
 def country_searcher(row, country):
     if country in row['Countries']:
@@ -73,12 +53,9 @@ def country_parser(df_to_search, country):
 
 
 countries_list = []
-for country in region_list:
-    countries_list.append(official_name_converter(country_converter(country)))
-print(countries_list)
 
 df.fillna('', inplace=True)
-for country in countries_list:
+for country in region_list:
     outdf = country_parser(df, country)
     if outdf.empty:
         continue
